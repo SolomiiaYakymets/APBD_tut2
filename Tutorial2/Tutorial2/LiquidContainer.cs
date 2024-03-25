@@ -2,9 +2,9 @@ namespace Tutorial2;
 
 public class LiquidContainer: Container, IHazardNotifier
 {
-    private TypeLiquid _typeLiquid;
-    
-    public LiquidContainer(double mass, double height, double weight, double depth, double maxPlayload, string serialNum, TypeLiquid typeLiquid) : base(mass, height, weight, depth, maxPlayload, serialNum)
+    public TypeLiquid TypeLiquid;
+    private static int _count;
+    public LiquidContainer(double mass, double height, double weight, double depth, double maxPlayload, TypeLiquid typeLiquid) : base(mass, height, weight, depth, maxPlayload )
     {
         Mass = mass;
         Height = height;
@@ -12,7 +12,7 @@ public class LiquidContainer: Container, IHazardNotifier
         Depth = depth;
         MaxPlayload = maxPlayload;
         SerialNum = CreatNum();
-        _typeLiquid = typeLiquid;
+        TypeLiquid = typeLiquid;
     }
 
     public void HazardousSituation(string error)
@@ -22,8 +22,8 @@ public class LiquidContainer: Container, IHazardNotifier
 
     private string CreatNum()
     {
-        int id = Count;
-        Count++;
+        int id = _count;
+        _count++;
         return "KON-L-" + id;
     }
 
@@ -34,16 +34,16 @@ public class LiquidContainer: Container, IHazardNotifier
 
     public override void LoadContainer(double fillMass)
     {
-        if (_typeLiquid == TypeLiquid.Hazardous)
+        if (TypeLiquid == TypeLiquid.Fuel)
         {
             MaxPlayload *= 0.5;
         }
-        else if (_typeLiquid == TypeLiquid.Ordinary)
+        else if (TypeLiquid == TypeLiquid.Milk)
         {
             MaxPlayload *= 0.9;
         }
 
-        if (Mass + fillMass < MaxPlayload)
+        if (Mass + fillMass <= MaxPlayload)
         {
             Mass += fillMass;
         }
