@@ -2,9 +2,10 @@ namespace Tutorial2;
 
 public class GasContainer: Container, IHazardNotifier
 {
-    private double _pressure;
+    public double Pressure;
+    private static int _count;
     
-    public GasContainer(double mass, double height, double weight, double depth, double maxPlayload, string serialNum, double pressure) : base(mass, height, weight, depth, maxPlayload, serialNum)
+    public GasContainer(double mass, double height, double weight, double depth, double maxPlayload, double pressure) : base(mass, height, weight, depth, maxPlayload)
     {
         Mass = mass;
         Height = height;
@@ -12,26 +13,24 @@ public class GasContainer: Container, IHazardNotifier
         Depth = depth;
         MaxPlayload = maxPlayload;
         SerialNum = CreatNum();
-        _pressure = pressure;
+        Pressure = pressure;
     }
     
     private string CreatNum()
     {
-        int id = Count;
-        Count++;
+        int id = _count;
+        _count++;
         return "KON-G-" + id;
     }
     
     public override void EmptyContainer()
     {
-        Mass -= Mass*0.05;
+        Mass -= Mass*0.95;
     }
 
     public override void LoadContainer(double fillMass)
     {
-        Mass += fillMass;
-        
-        if (Mass + fillMass < MaxPlayload)
+        if (Mass + fillMass <= MaxPlayload)
         {
             Mass += fillMass;
         }
